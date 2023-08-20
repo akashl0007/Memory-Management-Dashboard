@@ -1,0 +1,90 @@
+import psutil
+import os
+import time
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def display_dashboard():
+    clear_screen()
+    print("Memory Management Dashboard\n")
+    print("1. Display Memory Information")
+    print("2. Monitor Memory Usage")
+    print("3. Exit")
+    choice = input("\nEnter your choice: ")
+    return choice
+
+def display_memory_info():
+    memory_info = psutil.virtual_memory()
+    print("\nMemory Information:")
+    print(f"Total Memory: {memory_info.total} bytes")
+    print(f"Available Memory: {memory_info.available} bytes")
+    print(f"Used Memory: {memory_info.used} bytes")
+    print(f"Memory Usage Percentage: {memory_info.percent}%")
+    input("\nPress Enter to continue...")
+
+def monitor_memory_usage():
+    print("\nMonitoring Memory Usage (Press Ctrl+C to stop)...\n")
+    try:
+        while True:
+            memory_info = psutil.virtual_memory()
+            print(f"Used Memory: {memory_info.used} bytes | Memory Usage Percentage: {memory_info.percent}%")
+            time.sleep(2)  # Update every 2 seconds
+            clear_screen()
+    except KeyboardInterrupt:
+        pass
+
+def main():
+    while True:
+        choice = display_dashboard()
+
+        if choice == "1":
+            display_memory_info()
+        elif choice == "2":
+            monitor_memory_usage()
+        elif choice == "3":
+            print("Exiting the Memory Management Dashboard...")
+            break
+        else:
+            print("Invalid choice. Please select a valid option.")
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+In the above code, the dynamic memory consumption monitoring is achieved using the `psutil` library. `psutil` (process and system utilities) is a Python library that provides an interface for retrieving information on running processes and system utilization, including memory usage. It allows you to monitor various system resources, such as CPU, memory, disk, network, and more.
+
+In the code, the `psutil.virtual_memory()` function is used to retrieve information about the system's virtual memory, which includes details about total memory, available memory, used memory, and memory usage percentage. This function returns a `namedtuple` containing these memory-related attributes.
+
+Here's a breakdown of how `psutil` is used in the code:
+
+1. **Importing the `psutil` Library:**
+    ```python
+    import psutil
+    ```
+
+2. **Displaying Memory Information:**
+    The `psutil.virtual_memory()` function is called to retrieve memory information. The returned `namedtuple` includes attributes like `total`, `available`, `used`, and `percent`, which represent the total memory, available memory, used memory, and memory usage percentage, respectively.
+
+    ```python
+    memory_info = psutil.virtual_memory()
+    ```
+
+3. **Monitoring Memory Usage:**
+    In the `monitor_memory_usage()` function, a loop is set up to continuously monitor memory usage. The `psutil.virtual_memory()` function is called within the loop to get the current memory information. The loop uses a `try` block to catch a `KeyboardInterrupt` (Ctrl+C) so that the monitoring can be stopped when the user wants.
+
+    ```python
+    while True:
+        memory_info = psutil.virtual_memory()
+        # Print or update memory usage information here
+        time.sleep(2)  # Update every 2 seconds
+    ```
+
+By utilizing the `psutil` library, you can monitor memory consumption dynamically and present it to the user in real-time or through periodic updates, as demonstrated in the code. Keep in mind that this is a simplified example, and real-world applications might require more advanced data visualization and user interaction techniques for a memory management dashboard.
